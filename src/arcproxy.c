@@ -20,14 +20,10 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <string.h>
+#include <assert.h>
 
 #include "arcproxy.h"
 
-#include <assert.h>
-#include <stdio.h>
-
-
-//#define REF 1
 /*
  *  0-15    ephimeral count
  * 16-31    link count
@@ -129,32 +125,6 @@ arcproxy_t *arcproxy_create(uint32_t size)
 
 void arcproxy_destroy(arcproxy_t *proxy)
 {
-
-    for (int ndx = 0; ndx < proxy->size; ndx++)
-    {
-        arcnode_t *node = &proxy->nodes[ndx];
-        if (node->obj == NULL)
-            continue;
-
-        unsigned int ecount = node->count >> 16;
-        unsigned int count = node->count & 0xffff;
-        fprintf(stderr, "%d) %p - %d %p  count (%d, %d)\n",
-            ndx,
-            node,
-            node->ndx,
-            node->next,
-            ecount, count,
-            1);
-    }
-    arcnode_t *tnode = ndx2node(proxy, proxy->tail);
-    unsigned int ecount = tnode->count >> 16;
-    unsigned int count = tnode->count & 0xffff;
-    fprintf(stderr, "tail@%p tail.ecount=%d ndx=%d ecount=%d count=%d\n",
-        tnode,
-        proxy->tail >> 16,
-        tnode->ndx,
-        ecount, count);
-
     free(proxy->nodes);
     free(proxy);
 }
@@ -175,15 +145,6 @@ void arcproxy_ref_release(arcproxy_t *proxy, arcref_t ref)
         if (rc != dropcount)
             break;
 
-
-
-        if (node->count != 0) {
-            fprintf(stderr, "node: count=%d ndx=%d -- ref=%08lx\n", node->count, node->ndx, ref);
-        }
-        assert(node->count == 0);
-
-
-
         node->dealloc(node->obj);
         node->obj = NULL;
         node->dealloc = NULL;
@@ -191,7 +152,7 @@ void arcproxy_ref_release(arcproxy_t *proxy, arcref_t ref)
         arcnode_t *next = node->next;
         push(proxy, node);
         node = next;
-        dropcount = 1;   // drop link from previous node
+        dropcount = 1;      // drop link from previous node
     }
 }
 
