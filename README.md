@@ -2,9 +2,14 @@
 Proxy collector using atomic reference counting for lock-free read access to shared data.
 
 This is based on
+
 1991-05-16 patent 5,295,262 Read-only access without blocking via access vectorsThis is differential reference counting, aka split reference counting, for readers.
 
-2003-03-09 Atomic refcounted proxy collector https://groups.google.com/g/comp.programming.threads/c/zV_fGijahA4/m/BAcsYEOBU0UJ
+2002-11-07 Atomic refcounted smart pointerusing compare and exchange with double word single target.
+https://groups.google.com/g/comp.programming.threads/c/Sev_8xKh3RU/m/wEkEqnOhs_oJ
+
+2003-03-09 Atomic refcounted proxy collector
+https://groups.google.com/g/comp.programming.threads/c/zV_fGijahA4/m/BAcsYEOBU0UJ
 
 ## Example
 In main thread
