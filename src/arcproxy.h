@@ -34,7 +34,19 @@ extern void arcproxy_destroy(arcproxy_t *proxy);
 extern arcref_t arcproxy_ref_acquire(arcproxy_t *proxy);
 extern void arcproxy_ref_release(arcproxy_t *proxy, arcref_t ref);
 
-extern bool arcproxy_retire(arcproxy_t *proxy, void *obj, void (*dealloc)(void *));
+/**
+ * Free data object once all prior read access to the object is complete
+ * @param proxy arcproxy domain reference
+ * @param obj the data object to be freed
+ * @param dealloc the deallocation function for the object
+ * @returns true if the deallocation is scheduled.  If false, there are temporarily no
+ * resourses to schedule dealloction.  A retry attempt should be made at a later point.
+ * 
+ * @note deallocation will run on the thread that observes prior read access is complete.
+ * This can occur as part of this function call or as part of another threads arcproxy_ref_release
+ * call.
+*/
+extern bool arcproxy_try_retire(arcproxy_t *proxy, void *obj, void (*dealloc)(void *));
 
 #ifdef __cplusplus
 }

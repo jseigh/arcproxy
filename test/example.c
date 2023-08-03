@@ -70,7 +70,10 @@ static int writer(env_t *env)
     pdata = atomic_exchange(&env->pdata, pdata);
     strcpy(pdata, STALE);   // indicate old data is now stale
 
-    arcproxy_retire(env->proxy, pdata, &freedata);
+    while (!arcproxy_try_retire(env->proxy, pdata, &freedata))
+    {
+        thrd_yield();
+    }
     return 0;
 }
 

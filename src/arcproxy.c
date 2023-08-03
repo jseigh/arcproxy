@@ -183,7 +183,7 @@ static void push(arcproxy_t *proxy, arcnode_t *node)
     while (!atomic_compare_exchange_strong_explicit(&proxy->pool, &node2, node, memory_order_release, memory_order_relaxed));
 }
 
-bool arcproxy_retire(arcproxy_t *proxy, void *obj, void (*dealloc)(void *))
+bool arcproxy_try_retire(arcproxy_t *proxy, void *obj, void (*dealloc)(void *))
 {
 
     arcref_t ref = arcproxy_ref_acquire(proxy);     // MTTT
