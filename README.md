@@ -29,7 +29,7 @@ arcproxy_ref_release(proxy, ref); // after every read access data
 
 In writer thread
 ```
-... // update shared data
+ // update shared data
 arcproxy_retire(proxy, pdata, &free);   // free data when safe to do so
 ```
 
@@ -47,3 +47,5 @@ Library file, libarcproxy.a, in project lib directory.
 
 A 16 bit monotonic counter is used for ephemeral references.  It can wrap without a prolmen
 provided there are less than 2**16 concurrent references via arcproxy_ref_acquire.
+
+TODO change README.md to README.txt file to avoid random formatting.
