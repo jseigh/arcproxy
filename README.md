@@ -39,5 +39,11 @@ In main directory
 cmake .
 make install
 ...
+
 Header file, arcproxy.h, in project include directory.
 Library file, libarcproxy.a, in project lib directory.
+
+## Usage restrictions
+
+A 16 bit monotonic counter is used for ephemeral references.  It can wrap without a prolmen
+provided there are less than 2**16 concurrent references via arcproxy_ref_acquire.
