@@ -16,16 +16,16 @@ In main thread
 
 ```
 arcproxy_t *proxy = arcproxy_create(200);
-...
+
 arcproxy_destroy(proxy);
 ```
 
 In reader threads
 ```
 arcref_t ref = arcproxy_ref_acquire(proxy); // prior to every read access to data
-...
+
 arcproxy_ref_release(proxy, ref); // after every read access data
-...
+```
 
 In writer thread
 ```
@@ -35,10 +35,10 @@ arcproxy_retire(proxy, pdata, &free);   // free data when safe to do so
 
 ## Build
 In main directory
-...
+```
 cmake .
 make install
-...
+```
 
 Header file, arcproxy.h, in project include directory.
 Library file, libarcproxy.a, in project lib directory.
@@ -47,5 +47,3 @@ Library file, libarcproxy.a, in project lib directory.
 
 A 16 bit monotonic counter is used for ephemeral references.  It can wrap without a prolmen
 provided there are less than 2**16 concurrent references via arcproxy_ref_acquire.
-
-TODO change README.md to README.txt file to avoid random formatting.
